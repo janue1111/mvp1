@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const typingIndicator = document.getElementById('typing-indicator');
 
     // URL del webhook de n8n (¡Usa tu URL de ngrok aquí!)
-    const N8N_WEBHOOK_URL = 'https://99e6-38-199-5-114.ngrok-free.app/webhook/caca86f8-a730-4b55-a566-ed9ffe193507/chat';
+    const N8N_WEBHOOK_URL = 'https://644f-38-199-5-114.ngrok-free.app/webhook/caca86f8-a730-4b55-a566-ed9ffe193507/chat';
 
     // Variable para guardar el ID de sesión de la conversación
     let sessionId = null;
