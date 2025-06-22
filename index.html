@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat con El Sabor de mi Tierra</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Pantalla de inicio -->
+    <div id="start-screen">
+        <button id="start-btn">Comenzar</button>
+    </div>
+
+    <!-- Contenedor del Chat (inicialmente oculto) -->
+    <div id="chat-container" class="hidden">
+        <div class="chat-header">
+            <h2>Chat con El Sabor de mi Tierra</h2>
+        </div>
+        <div id="chat-box">
+            <!-- Los mensajes del chat se añadirán aquí -->
+        </div>
+        <div id="typing-indicator" class="hidden">
+            <div class="dot-flashing"></div>
+        </div>
+        <form id="chat-form">
+            <input type="text" id="message-input" placeholder="Escribe tu pregunta aquí..." autocomplete="off" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
