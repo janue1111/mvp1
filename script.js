@@ -100,13 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         const jsonString = line.substring(6); // Quita "data: "
                         const data = JSON.parse(jsonString);
                         
-                        if (data.response && data.response.text) {
-                            if (!botMessageElement) {
-                                // Si es el primer trozo de texto, crea un nuevo elemento de mensaje
-                                botMessageElement = addMessageToChat(data.response.text, 'bot');
-                            } else {
-                                // Si ya existe, añade el nuevo texto al mensaje existente
-                                botMessageElement.textContent += data.response.text;
+                      // CÓDIGO NUEVO - SÍ FUNCIONA
+if (data.response && data.response.output) { // <-- ¡Aquí está el cambio!
+    if (!botMessageElement) {
+        botMessageElement = addMessageToChat(data.response.output, 'bot'); // <-- ¡Y aquí!
+    } else {
+        botMessageElement.textContent += data.response.output; // <-- ¡Y aquí!
                                 chatBox.scrollTop = chatBox.scrollHeight;
                             }
                         }
