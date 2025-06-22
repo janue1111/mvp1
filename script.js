@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Envía el mensaje al webhook de n8n y procesa la respuesta en streaming.
+     * Envía el mensaje al webhook de n8n y procesa la respuesta.
      * @param {string} messageText - El mensaje del usuario.
      */
     async function sendMessageToN8n(messageText) {
@@ -81,39 +81,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`Error en la respuesta del servidor: ${response.statusText}`);
             }
 
-            // El webhook de chat de n8n devuelve una respuesta en streaming (stream)
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let botMessageElement = null;
-
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) break;
-
-                const chunk = decoder.decode(value, { stream: true });
-                
-                // El streaming de n8n/langchain envía líneas con "data: {...}"
-                const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
-
-                for (const line of lines) {
-                    try {
-                        const jsonString = line.substring(6); // Quita "data: "
-                        const data = JSON.parse(jsonString);
-                        
-                      // CÓDIGO NUEVO - SÍ FUNCIONA
-if (data.response && data.response.output) { // <-- ¡Aquí está el cambio!
-    if (!botMessageElement) {
-        botMessageElement = addMessageToChat(data.response.output, 'bot'); // <-- ¡Y aquí!
-    } else {
-        botMessageElement.textContent += data.response.output; // <-- ¡Y aquí!
-                                chatBox.scrollTop = chatBox.scrollHeight;
-                            }
-                        }
-                    } catch (e) {
-                        // Ignorar líneas que no sean JSON válido (pueden ser heartbeats o líneas vacías)
-                    }
-                }
+            // --- INICIO DEL CÓDIGO CORREGIDO ---
+            // Convertimos la respuesta en JSON
+            const data = await response.json();
+            
+            // Verificamos si la respuesta tiene la propiedad "reply"
+            if (data && data.reply) {
+                // Añadimos el mensaje del bot al chat
+                addMessageToChat(data.reply, 'bot');
+            } else {
+                // Si no viene "reply", mostramos un mensaje genérico
+                throw new Error("La respuesta del bot no tiene el formato esperado.");
             }
+            // --- FIN DEL CÓDIGO CORREGIDO ---
+
         } catch (error) {
             console.error('Error al conectar con el webhook de n8n:', error);
             addMessageToChat('Lo siento, ha ocurrido un error al conectar con el asistente. Por favor, inténtalo de nuevo más tarde.', 'bot');
